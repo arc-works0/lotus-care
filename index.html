@@ -7,7 +7,39 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-input" hidden>
+
+  <header class="top-bar">
+    <a class="top-bar__brand" href="#">Lotus</a>
+    <label for="nav-toggle" class="hamburger" aria-controls="site-menu">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="visually-hidden">メニュー</span>
+    </label>
+  </header>
+
+  <div class="nav-overlay" id="site-menu">
+    <nav class="nav-overlay__sheet" aria-label="サイト内メニュー">
+      <div class="nav-overlay__head">
+        <label for="nav-toggle" class="nav-overlay__close" aria-label="閉じる">
+          <span class="nav-overlay__close-icon" aria-hidden="true"></span>
+        </label>
+      </div>
+      <ul class="nav-overlay__list">
+        <li><a class="nav-overlay__link" href="#intro">生活の質を上げるサービスとは：</a></li>
+        <li><a class="nav-overlay__link" href="#services">サービス内容：</a></li>
+        <li><a class="nav-overlay__link" href="#vision">Vision:</a></li>
+        <li><a class="nav-overlay__link" href="#mission">Mission:</a></li>
+        <li><a class="nav-overlay__link" href="#scenes">活用シーン・導入例：</a></li>
+        <li><a class="nav-overlay__link" href="#audience">個人のお客様へ：</a></li>
+        <li><a class="nav-overlay__link" href="#audience">法人・団体のご担当者様へ：</a></li>
+        <li><a class="nav-overlay__link" href="#contact">お問い合わせ：</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <header class="site-header reveal">
     <div class="header-inner">
       <p class="header-tagline">「生活の質を上げるサービス」を軸に美容と健康のケアを行っています</p>
       <p class="header-sub">ネイルサービス・スクール・アピアランスケア</p>
@@ -15,33 +47,43 @@
     </div>
   </header>
 
-  <section class="hero" aria-hidden="true">
+  <section class="hero reveal" aria-hidden="true">
     <div class="hero-placeholder"></div>
   </section>
 
   <main class="main-content">
-    <section class="section section-intro">
+    <section class="section section-intro reveal" id="intro">
       <h2 class="section-heading">生活の質を上げるサービスとは：</h2>
       <p class="body-text">外見と身だしなみを通して「信頼・清潔感・パフォーマンス」を支えるトータルケアです。ネイル・フットケアによる整った印象づくりに加え、エピテーゼやウィッグで外見の不安を軽減。自信を持って人前に立ち仕事に集中できる状態や前向きに生活できる状態を作ります。個人にも企業にも価値を提供するサービスです。</p>
     </section>
 
-    <section class="section section-services">
+    <section class="section section-services reveal" id="services">
       <h2 class="section-heading">サービス内容：</h2>
-      <ul class="service-list">
-        <li><span class="label">・ネイルサービス：</span>単なる装飾ではなく「清潔感・信頼感・自己管理能力」を整えるための身だしなみケアです。ハンド・フットともに爪や肌の状態を丁寧に整え、年齢や性別を問わず好印象な手元・足元へ導きます。</li>
-        <li><span class="label">・アピアランスケア：</span>病気や治療、年齢や体の変化による外見の悩みに寄り添い、自分らしく社会と関わり続けるためのサポートです。取り扱い：ウィッグ（部分・フル）、エピテーゼ（乳房・乳頭・パッド・指）</li>
-        <li><span class="label">・講師・出張サービス：</span>一般へのネイルやケアのスクールだけでなく企業や団体向けにも、ネイルケアやアピアランスケアの知識と技術を提供しています。</li>
-      </ul>
+      <div class="service-scroll">
+        <ul class="service-cards">
+          <li class="service-card">
+            <p class="service-card__text"><span class="label">・ネイルサービス：</span>単なる装飾ではなく「清潔感・信頼感・自己管理能力」を整えるための身だしなみケアです。ハンド・フットともに爪や肌の状態を丁寧に整え、年齢や性別を問わず好印象な手元・足元へ導きます。</p>
+          </li>
+          <li class="service-card">
+            <p class="service-card__text"><span class="label">・アピアランスケア：</span>病気や治療、年齢や体の変化による外見の悩みに寄り添い、自分らしく社会と関わり続けるためのサポートです。取り扱い：ウィッグ（部分・フル）、エピテーゼ（乳房・乳頭・パッド・指）</p>
+          </li>
+          <li class="service-card">
+            <p class="service-card__text"><span class="label">・講師・出張サービス：</span>一般へのネイルやケアのスクールだけでなく企業や団体向けにも、ネイルケアやアピアランスケアの知識と技術を提供しています。</p>
+          </li>
+        </ul>
+      </div>
     </section>
 
-    <div class="section-divider" aria-hidden="true"></div>
+    <div class="section-divider reveal" aria-hidden="true"></div>
 
-    <section class="section section-vision">
-      <p class="vm-text"><span class="vm-label">Vision:</span>「外見の悩みや体の変化によって、社会とのつながりや挑戦を諦める人をなくす。ネイル、アピアランスケア、ケア教育を通して自分らしく働き、前向きに生きる社会へ」</p>
-      <p class="vm-text"><span class="vm-label">Mission:</span>外見ケアを「装うためのもの」だけではなく「自信と行動力を支えるインフラ」として提供します。</p>
+    <section class="section section-vision reveal">
+      <div class="vm-editorial">
+        <p class="vm-text vm-vision" id="vision"><span class="vm-label">Vision:</span><span class="vm-quote">「外見の悩みや体の変化によって、社会とのつながりや挑戦を諦める人をなくす。ネイル、アピアランスケア、ケア教育を通して自分らしく働き、前向きに生きる社会へ」</span></p>
+        <p class="vm-text vm-mission" id="mission"><span class="vm-label">Mission:</span><span class="vm-lede">外見ケアを「装うためのもの」だけではなく「自信と行動力を支えるインフラ」として提供します。</span></p>
+      </div>
     </section>
 
-    <section class="section section-scenes">
+    <section class="section section-scenes reveal" id="scenes">
       <h2 class="section-heading">活用シーン・導入例：</h2>
       <ul class="scene-list">
         <li>・仕事や接客で第一印象が求められる方のネイルサービス</li>
@@ -52,12 +94,12 @@
       </ul>
     </section>
 
-    <section class="section section-audience">
+    <section class="section section-audience reveal" id="audience">
       <p class="body-text audience-block"><span class="audience-label">個人のお客様へ：</span>外見や身だしなみの悩みは、人に相談しづらいもの。いまの自分にあった選択肢をご提案します。</p>
       <p class="body-text audience-block"><span class="audience-label">法人・団体のご担当者様へ：</span>福利厚生、研修、出張サービスなど、目的や課題に合わせたプラン設計が可能です。</p>
     </section>
 
-    <section class="section section-contact" id="contact">
+    <section class="section section-contact reveal" id="contact">
       <h2 class="section-heading">お問い合わせ：</h2>
       <address class="contact-address">
         <p class="body-text contact-line">〒813−0044 福岡市東区千早5−10−7（JR香椎駅・千早駅より徒歩圏内 / 西鉄貝塚線香椎宮前駅徒歩3分）</p>
@@ -67,12 +109,28 @@
     </section>
   </main>
 
-  <footer class="bottom-spacer" aria-hidden="true"></footer>
+  <footer class="bottom-spacer reveal" aria-hidden="true"></footer>
 
-  <nav class="fixed-bottom-nav" aria-label="電話・予約・メール">
-    <a class="nav-item nav-phone" href="tel:09085718272">電話</a>
-    <a class="nav-item nav-book" href="https://nailbook.jp/nail-salon/22773/" target="_blank" rel="noopener noreferrer">予約</a>
-    <a class="nav-item nav-mail" href="mailto:lotuscare@outlook.jp">メール</a>
+  <nav class="tab-bar" aria-label="電話・予約・メール">
+    <a class="tab-bar__item" href="tel:09085718272">
+      <svg class="tab-bar__icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.21z"/></svg>
+      <span class="tab-bar__label">電話</span>
+    </a>
+    <a class="tab-bar__item" href="https://nailbook.jp/nail-salon/22773/" target="_blank" rel="noopener noreferrer">
+      <svg class="tab-bar__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 3v4M16 3v4M4 11h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>
+      <span class="tab-bar__label">予約</span>
+    </a>
+    <a class="tab-bar__item" href="mailto:lotuscare@outlook.jp">
+      <svg class="tab-bar__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 6h16v12H4V6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="tab-bar__label">メール</span>
+    </a>
   </nav>
+  <script>
+    document.querySelectorAll(".nav-overlay__link").forEach(function (a) {
+      a.addEventListener("click", function () {
+        document.getElementById("nav-toggle").checked = false;
+      });
+    });
+  </script>
 </body>
 </html>
