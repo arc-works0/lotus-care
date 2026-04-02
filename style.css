@@ -1,45 +1,65 @@
 /* =============================================================================
-   Nails Ren / Lotus — Mobile-first, CSS variables for hero photo swap
-   後日写真に差し替える場合: --hero-bg-image に url('your-photo.jpg') を指定
+   Nails Ren / Lotus — Mobile-first, pink luxury palette
+   写真を載せる際の例:
+     --hero-bg-image: url('hero.jpg');
+     --hero-bg-overlay: linear-gradient(
+       165deg,
+       rgba(252, 228, 236, 0.55) 0%,
+       rgba(255, 245, 246, 0.35) 40%,
+       rgba(26, 42, 58, 0.35) 100%
+     );
    ============================================================================= */
 
 :root {
-  /* Page & hero — 現在はグラデーション。写真利用例:
-     --hero-bg-image: url('hero.jpg');
-     --hero-bg-overlay: linear-gradient(165deg, rgba(26,42,58,0.85) 0%, rgba(26,42,58,0.45) 100%);
-   */
+  /* ベース（サクラピンク／ローズベージュ） */
+  --bg-pink-soft: #fff5f6;
+  --bg-rose-beige: #fce4ec;
+
+  /* メイン文字（コントラスト最大化） */
+  --text-body: #2d2d2d;
+  --text-heading: #1a2a3a;
+
+  /* アクセント */
+  --accent-berry: #ad1457;
+  --accent-champagne: #d4af37;
+
+  /* ヒーロー: 初期はピンク→白のグラデーション */
   --hero-bg-image: linear-gradient(
     165deg,
-    #1a2a3a 0%,
-    #2a3848 32%,
-    #6b6350 68%,
-    #d4c9b8 100%
+    #fce4ec 0%,
+    #fff5f6 42%,
+    #ffffff 100%
   );
+  /* 写真の上: 薄いピンクのヴェール＋下端スクリムで白文字を際立たせる（グラデのみのときも自然に馴染む） */
   --hero-bg-overlay: linear-gradient(
-    180deg,
-    rgba(15, 22, 35, 0.12) 0%,
-    transparent 45%,
-    rgba(212, 201, 184, 0.15) 100%
+    165deg,
+    rgba(252, 228, 236, 0.42) 0%,
+    rgba(255, 245, 246, 0.32) 48%,
+    rgba(26, 42, 58, 0.12) 100%
   );
 
   --page-bg: linear-gradient(
     180deg,
-    #1a2a3a 0%,
-    #243040 18%,
-    #e8e0d4 72%,
-    #f2ebe3 100%
+    var(--bg-rose-beige) 0%,
+    var(--bg-pink-soft) 38%,
+    #ffffff 100%
   );
 
-  --navy: #1a2744;
-  --navy-deep: #0f1628;
+  /* 互換・コンポーネント用 */
+  --navy: var(--text-heading);
+  --navy-deep: #141c26;
   --navy-light: #2d3d5c;
-  --gold: #c9a962;
-  --gold-soft: #e8d9b4;
+  --gold: var(--accent-champagne);
+  --gold-soft: #e8d4a8;
+  --berry: var(--accent-berry);
   --white: #fafbfc;
-  --text: #1e2838;
-  --text-muted: #4a5568;
-  --shadow: rgba(15, 22, 40, 0.14);
-  --shadow-lift: rgba(15, 22, 40, 0.22);
+  --text: var(--text-body);
+  --text-muted: #5a5a5a;
+  --shadow: rgba(26, 42, 58, 0.1);
+  --shadow-lift: rgba(26, 42, 58, 0.16);
+
+  /* 濃色UI上の白文字（可読性） */
+  --text-on-dark-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 0, 0, 0.18);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,6 +83,7 @@ body {
   font-family: "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif;
   font-size: 1rem;
   line-height: 1.85;
+  letter-spacing: 0.02em;
   color: var(--text);
   background: var(--page-bg);
   background-attachment: fixed;
@@ -82,7 +103,7 @@ a {
 }
 
 a:hover {
-  color: var(--gold);
+  color: var(--accent-berry);
 }
 
 /* ----- Scroll reveal (CSS scroll-driven) ----- */
@@ -148,16 +169,17 @@ a:hover {
   justify-content: space-between;
   min-height: var(--top-bar-h);
   padding: 0.5rem 1rem 0.5rem 1.25rem;
-  border-bottom: 1px solid rgba(201, 169, 98, 0.35);
-  background: linear-gradient(180deg, rgba(15, 22, 35, 0.97) 0%, rgba(26, 39, 68, 0.95) 100%);
-  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+  background: linear-gradient(180deg, rgba(20, 28, 38, 0.98) 0%, rgba(26, 42, 58, 0.96) 100%);
+  backdrop-filter: blur(12px);
 }
 
 .top-bar__brand {
   font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   color: var(--white);
+  text-shadow: var(--text-on-dark-shadow);
   text-decoration: none;
   transition: color 0.35s var(--ease-premium), transform 0.4s var(--ease-premium);
 }
@@ -181,7 +203,7 @@ a:hover {
 }
 
 .hamburger:hover {
-  background: rgba(201, 169, 98, 0.2);
+  background: rgba(173, 20, 87, 0.28);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--shadow-lift);
 }
@@ -235,8 +257,12 @@ a:hover {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  background:
-    linear-gradient(180deg, rgba(15, 22, 35, 0.97) 0%, rgba(26, 39, 68, 0.98) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 28, 38, 0.98) 0%,
+    rgba(26, 42, 58, 0.97) 45%,
+    rgba(45, 20, 38, 0.96) 100%
+  );
   color: var(--white);
   padding: calc(env(safe-area-inset-top, 0px) + 0.75rem) 1.25rem calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
   overflow-y: auto;
@@ -266,7 +292,7 @@ a:hover {
 }
 
 .nav-overlay__close:hover {
-  background: rgba(201, 169, 98, 0.22);
+  background: rgba(173, 20, 87, 0.35);
   transform: translateY(-3px);
   box-shadow: 0 10px 28px var(--shadow-lift);
 }
@@ -312,9 +338,11 @@ a:hover {
   padding: 1.1rem 0.25rem;
   font-size: clamp(1rem, 3.2vw, 1.1rem);
   font-weight: 600;
+  line-height: 1.85;
+  letter-spacing: 0.03em;
   color: var(--white);
+  text-shadow: var(--text-on-dark-shadow);
   text-decoration: none;
-  letter-spacing: 0.02em;
   transition: color 0.35s var(--ease-premium), transform 0.4s var(--ease-premium), padding-left 0.35s var(--ease-premium);
 }
 
@@ -324,9 +352,14 @@ a:hover {
   padding-left: 0.5rem;
 }
 
-/* ----- Site header ----- */
+/* ----- Site header（濃色＋オーバーレイで白文字を安定表示） ----- */
 .site-header {
-  background: linear-gradient(165deg, var(--navy-deep) 0%, var(--navy) 45%, var(--navy-light) 100%);
+  background: linear-gradient(
+    165deg,
+    var(--navy-deep) 0%,
+    #1a2a3a 38%,
+    #2d1f2e 100%
+  );
   color: var(--white);
   padding: 1.75rem 1.25rem 2rem;
   position: relative;
@@ -338,8 +371,8 @@ a:hover {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(201, 169, 98, 0.15) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(201, 169, 98, 0.08) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 100% 0%, rgba(212, 175, 55, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(173, 20, 87, 0.12) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -353,8 +386,9 @@ a:hover {
   margin: 0 0 0.75rem;
   font-size: clamp(0.95rem, 2.8vw, 1.05rem);
   font-weight: 500;
-  line-height: 1.75;
-  letter-spacing: 0.02em;
+  line-height: 1.85;
+  letter-spacing: 0.03em;
+  text-shadow: var(--text-on-dark-shadow);
 }
 
 .header-sub {
@@ -362,16 +396,20 @@ a:hover {
   font-size: clamp(0.85rem, 2.2vw, 0.95rem);
   color: var(--gold-soft);
   font-weight: 500;
-  letter-spacing: 0.04em;
+  line-height: 1.85;
+  letter-spacing: 0.05em;
+  text-shadow: var(--text-on-dark-shadow);
 }
 
 .site-title {
   margin: 0;
   font-size: clamp(1.05rem, 3.2vw, 1.25rem);
   font-weight: 700;
-  line-height: 1.55;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
   color: var(--white);
-  border-left: 3px solid var(--gold);
+  text-shadow: var(--text-on-dark-shadow);
+  border-left: 3px solid var(--accent-champagne);
   padding-left: 0.85rem;
 }
 
@@ -398,8 +436,8 @@ a:hover {
       -18deg,
       transparent,
       transparent 2px,
-      rgba(201, 169, 98, 0.04) 2px,
-      rgba(201, 169, 98, 0.04) 4px
+      rgba(173, 20, 87, 0.04) 2px,
+      rgba(173, 20, 87, 0.04) 4px
     );
   pointer-events: none;
 }
@@ -412,7 +450,7 @@ a:hover {
   width: 120%;
   height: 85%;
   transform: translate(-50%, -50%) rotate(-6deg);
-  background: radial-gradient(ellipse at center, rgba(201, 169, 98, 0.1) 0%, transparent 65%);
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.12) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -431,18 +469,19 @@ a:hover {
   margin: 0 0 1rem;
   font-size: clamp(1.15rem, 3.5vw, 1.35rem);
   font-weight: 700;
-  color: var(--navy);
-  line-height: 1.45;
-  letter-spacing: 0.03em;
+  color: var(--text-heading);
+  line-height: 1.65;
+  letter-spacing: 0.04em;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--gold);
+  border-bottom: 2px solid var(--accent-champagne);
 }
 
 .body-text {
   margin: 0 0 1rem;
   font-size: clamp(0.9375rem, 2.5vw, 1rem);
-  line-height: 1.95;
-  color: var(--text);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--text-body);
 }
 
 .body-text:last-child {
@@ -481,10 +520,11 @@ a:hover {
   min-height: 12rem;
   padding: 1.35rem 1.25rem;
   font-size: clamp(0.9375rem, 2.5vw, 1rem);
-  line-height: 1.95;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(201, 169, 98, 0.45);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--text-body);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(173, 20, 87, 0.2);
   border-radius: 6px;
   box-shadow: 0 12px 40px var(--shadow);
   transition: transform 0.45s var(--ease-premium), box-shadow 0.45s var(--ease-premium), border-color 0.35s ease;
@@ -493,12 +533,12 @@ a:hover {
 .service-card:hover .service-card__text {
   transform: translateY(-4px);
   box-shadow: 0 18px 48px var(--shadow-lift);
-  border-color: rgba(201, 169, 98, 0.65);
+  border-color: rgba(173, 20, 87, 0.45);
 }
 
 .service-card .label {
   font-weight: 600;
-  color: var(--navy);
+  color: var(--accent-berry);
 }
 
 .scene-list {
@@ -509,8 +549,9 @@ a:hover {
 
 .scene-list li {
   font-size: clamp(0.9375rem, 2.5vw, 1rem);
-  line-height: 1.95;
-  color: var(--text);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--text-body);
   margin-bottom: 1.15rem;
   padding-left: 0;
 }
@@ -521,12 +562,12 @@ a:hover {
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.55), transparent);
   margin: 2rem 0;
   max-width: 100%;
 }
 
-/* ----- Vision / Mission editorial ----- */
+/* ----- Vision / Mission（和紙風テクスチャ＋淡いピンクの特別な空間） ----- */
 .section-vision {
   margin-left: -1.25rem;
   margin-right: -1.25rem;
@@ -537,14 +578,32 @@ a:hover {
 
 .vm-editorial {
   padding: clamp(2.75rem, 10vw, 5.5rem) clamp(1.25rem, 5vw, 3.5rem);
-  background: linear-gradient(165deg, rgba(26, 42, 58, 0.08) 0%, rgba(255, 255, 255, 0.55) 100%);
-  border-top: 1px solid rgba(201, 169, 98, 0.35);
-  border-bottom: 1px solid rgba(201, 169, 98, 0.35);
+  background-color: #fff9fa;
+  background-image:
+    radial-gradient(ellipse 100% 70% at 50% -10%, rgba(252, 228, 236, 0.85) 0%, transparent 58%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.35) 0px,
+      rgba(255, 255, 255, 0.35) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(173, 20, 87, 0.02) 0px,
+      rgba(173, 20, 87, 0.02) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    linear-gradient(180deg, rgba(255, 245, 246, 0.95) 0%, rgba(252, 228, 236, 0.35) 100%);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .vm-text {
   margin: 0;
-  color: var(--text);
+  color: var(--text-body);
 }
 
 .vm-vision {
@@ -553,34 +612,38 @@ a:hover {
 
 .vm-mission {
   padding-top: clamp(2rem, 6vw, 3rem);
-  border-top: 1px solid rgba(201, 169, 98, 0.25);
+  border-top: 1px solid rgba(173, 20, 87, 0.12);
 }
 
 .vm-label {
   display: block;
   margin-bottom: clamp(1.5rem, 4vw, 2.25rem);
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", "YuMincho", "MS PMincho", serif;
   font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--navy);
-  opacity: 0.9;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent-berry);
+  opacity: 0.95;
 }
 
 .vm-quote {
   display: block;
-  font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "MS PMincho", serif;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", "YuMincho", "Hiragino Mincho Pro", "MS PMincho", serif;
   font-size: clamp(1.05rem, 3.2vw, 1.25rem);
   font-weight: 500;
-  line-height: 2.25;
-  letter-spacing: 0.02em;
+  line-height: 2.05;
+  letter-spacing: 0.06em;
+  color: var(--text-heading);
 }
 
 .vm-lede {
   display: block;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", "YuMincho", "Hiragino Mincho Pro", "MS PMincho", serif;
   font-size: clamp(1rem, 2.8vw, 1.12rem);
   font-weight: 500;
-  line-height: 2.25;
-  letter-spacing: 0.02em;
+  line-height: 2.05;
+  letter-spacing: 0.05em;
+  color: var(--text-heading);
 }
 
 .audience-block {
@@ -593,7 +656,7 @@ a:hover {
 
 .audience-label {
   font-weight: 700;
-  color: var(--navy);
+  color: var(--accent-berry);
 }
 
 .section-contact .contact-address {
@@ -603,6 +666,8 @@ a:hover {
 .contact-line {
   word-break: break-word;
   overflow-wrap: anywhere;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
 }
 
 .contact-line a {
@@ -613,7 +678,7 @@ a:hover {
   height: 0.5rem;
 }
 
-/* ----- Tab bar (fixed bottom) ----- */
+/* ----- Tab bar（濃色＋白文字＋シャドウで常に判読） ----- */
 .tab-bar {
   position: fixed;
   bottom: 0;
@@ -624,8 +689,8 @@ a:hover {
   grid-template-columns: repeat(3, 1fr);
   min-height: var(--tab-bar-h);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: linear-gradient(180deg, rgba(15, 22, 35, 0.98) 0%, var(--navy-deep) 100%);
-  border-top: 1px solid rgba(201, 169, 98, 0.45);
+  background: linear-gradient(180deg, rgba(20, 28, 38, 0.99) 0%, rgba(26, 42, 58, 0.98) 55%, #141c26 100%);
+  border-top: 1px solid rgba(212, 175, 55, 0.4);
   box-shadow: 0 -6px 32px var(--shadow);
 }
 
@@ -638,9 +703,11 @@ a:hover {
   padding: 0.5rem 0.25rem 0.65rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.35;
+  letter-spacing: 0.07em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: var(--text-on-dark-shadow);
   text-decoration: none;
-  letter-spacing: 0.06em;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   transition:
     color 0.4s var(--ease-premium),
@@ -656,12 +723,13 @@ a:hover {
 .tab-bar__icon {
   flex-shrink: 0;
   opacity: 0.92;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
   transition: opacity 0.35s ease, transform 0.45s var(--ease-premium);
 }
 
 .tab-bar__item:hover {
   color: var(--gold-soft);
-  background: rgba(201, 169, 98, 0.18);
+  background: rgba(173, 20, 87, 0.28);
   transform: translateY(-3px);
   box-shadow: 0 10px 28px var(--shadow-lift);
 }
@@ -676,7 +744,7 @@ a:hover {
 }
 
 .tab-bar__item:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent-champagne);
   outline-offset: -2px;
   z-index: 1;
 }
@@ -732,7 +800,7 @@ a:hover {
     transform: translateX(-50%);
     max-width: 28rem;
     border-radius: 8px 8px 0 0;
-    border-left: 1px solid rgba(201, 169, 98, 0.35);
-    border-right: 1px solid rgba(201, 169, 98, 0.35);
+    border-left: 1px solid rgba(212, 175, 55, 0.4);
+    border-right: 1px solid rgba(212, 175, 55, 0.4);
   }
 }
