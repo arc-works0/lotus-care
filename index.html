@@ -35,6 +35,7 @@
         <li><a class="nav-overlay__link" href="#scenes">活用シーン・導入例：</a></li>
         <li><a class="nav-overlay__link" href="#audience">個人のお客様へ：</a></li>
         <li><a class="nav-overlay__link" href="#audience">法人・団体のご担当者様へ：</a></li>
+        <li><a class="nav-overlay__link" href="#partners">Partners / Client</a></li>
         <li><a class="nav-overlay__link" href="#contact">お問い合わせ：</a></li>
       </ul>
     </nav>
@@ -73,6 +74,20 @@
           </li>
         </ul>
       </div>
+      <div class="stats-strip" id="stats" aria-label="主な実績指標">
+        <div class="stat-item">
+          <div class="stat-item__value"><span class="js-count" data-target="98">0</span><span class="stat-item__suffix">%</span></div>
+          <div class="stat-item__label">満足度</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__value"><span class="js-count" data-target="40">0</span><span class="stat-item__suffix">社</span></div>
+          <div class="stat-item__label">導入企業数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item__value"><span class="js-count" data-target="120">0</span><span class="stat-item__suffix">回</span></div>
+          <div class="stat-item__label">年間セミナー実績</div>
+        </div>
+      </div>
     </section>
 
     <div class="section-divider reveal" aria-hidden="true"></div>
@@ -98,6 +113,28 @@
     <section class="section section-audience reveal" id="audience">
       <p class="body-text audience-block"><span class="audience-label">個人のお客様へ：</span>外見や身だしなみの悩みは、人に相談しづらいもの。いまの自分にあった選択肢をご提案します。</p>
       <p class="body-text audience-block"><span class="audience-label">法人・団体のご担当者様へ：</span>福利厚生、研修、出張サービスなど、目的や課題に合わせたプラン設計が可能です。</p>
+    </section>
+
+    <section class="section section-partners reveal" id="partners">
+      <h2 class="section-heading">Partners / Client</h2>
+      <div class="partners-marquee" aria-label="協業パートナー（架空表記）">
+        <div class="partners-marquee__track">
+          <div class="partners-marquee__set">
+            <span class="partner-logo">AXIS CARE</span>
+            <span class="partner-logo">NORTH LINK</span>
+            <span class="partner-logo">WELLSTYLE</span>
+            <span class="partner-logo">SUMIRE LAB</span>
+            <span class="partner-logo">TRUST BIZ</span>
+          </div>
+          <div class="partners-marquee__set" aria-hidden="true">
+            <span class="partner-logo">AXIS CARE</span>
+            <span class="partner-logo">NORTH LINK</span>
+            <span class="partner-logo">WELLSTYLE</span>
+            <span class="partner-logo">SUMIRE LAB</span>
+            <span class="partner-logo">TRUST BIZ</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="section section-contact reveal" id="contact">
@@ -245,6 +282,67 @@
           });
         }
       }
+
+      function initCountUp() {
+        var nodes = document.querySelectorAll(".js-count");
+        if (!nodes.length) return;
+
+        function setFinal() {
+          nodes.forEach(function (el) {
+            var t = el.getAttribute("data-target");
+            if (t != null) el.textContent = t;
+          });
+        }
+
+        if (prefersReduced) {
+          setFinal();
+          return;
+        }
+
+        var stats = document.getElementById("stats");
+        if (!stats) return;
+
+        var ran = false;
+        var sio = null;
+
+        function run() {
+          if (ran) return;
+          ran = true;
+          if (sio) sio.disconnect();
+          nodes.forEach(function (el) {
+            var target = parseInt(el.getAttribute("data-target"), 10);
+            if (isNaN(target)) return;
+            var startVal = 0;
+            var startTime = null;
+            var duration = 1450;
+            function tick(now) {
+              if (startTime === null) startTime = now;
+              var p = Math.min(1, (now - startTime) / duration);
+              var eased = easeInOutCubic(p);
+              el.textContent = String(Math.round(startVal + (target - startVal) * eased));
+              if (p < 1) requestAnimationFrame(tick);
+              else el.textContent = String(target);
+            }
+            requestAnimationFrame(tick);
+          });
+        }
+
+        sio = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) run();
+            });
+          },
+          { threshold: 0.32 }
+        );
+        sio.observe(stats);
+        requestAnimationFrame(function () {
+          var r = stats.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.9 && r.bottom > 0) run();
+        });
+      }
+
+      initCountUp();
     })();
   </script>
 </body>
