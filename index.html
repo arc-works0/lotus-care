@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true" role="presentation"></div>
   <input type="checkbox" id="nav-toggle" class="nav-toggle-input" hidden>
 
   <header class="top-bar">
@@ -126,11 +127,125 @@
     </a>
   </nav>
   <script>
-    document.querySelectorAll(".nav-overlay__link").forEach(function (a) {
-      a.addEventListener("click", function () {
-        document.getElementById("nav-toggle").checked = false;
+    (function () {
+      var prefersReduced =
+        window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function smoothScrollToElement(el) {
+        if (!el) return;
+        var root = document.documentElement;
+        var start = root.scrollTop || document.body.scrollTop;
+        var rect = el.getBoundingClientRect();
+        var pad = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+        if (isNaN(pad)) pad = 0;
+        var end = rect.top + start - pad;
+        var dist = Math.abs(end - start);
+        var duration = Math.min(1100, Math.max(420, dist * 0.55));
+
+        if (prefersReduced) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+
+        var startTime = null;
+        function step(now) {
+          if (startTime === null) startTime = now;
+          var p = Math.min(1, (now - startTime) / duration);
+          var t = easeInOutCubic(p);
+          root.scrollTop = start + (end - start) * t;
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      var progressEl = document.querySelector(".scroll-progress");
+      function updateProgress() {
+        if (!progressEl) return;
+        var root = document.documentElement;
+        var max = root.scrollHeight - root.clientHeight;
+        var p = max > 0 ? root.scrollTop / max : 0;
+        progressEl.style.transform = "scaleX(" + Math.min(1, Math.max(0, p)) + ")";
+      }
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+      updateProgress();
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          var href = a.getAttribute("href");
+          if (!href || href === "#") return;
+          var id = href.slice(1);
+          var target = document.getElementById(id);
+          if (!target) return;
+          e.preventDefault();
+          var nav = document.getElementById("nav-toggle");
+          if (a.classList.contains("nav-overlay__link") && nav) {
+            nav.checked = false;
+            window.setTimeout(function () {
+              smoothScrollToElement(target);
+            }, 80);
+          } else {
+            smoothScrollToElement(target);
+          }
+        });
       });
-    });
+
+      function wrapVmChars(el, baseDelaySec) {
+        if (!el || prefersReduced) return;
+        var text = el.textContent;
+        if (!text) return;
+        el.textContent = "";
+        var i = 0;
+        Array.from(text).forEach(function (ch) {
+          var s = document.createElement("span");
+          s.className = "vm-char";
+          s.style.setProperty("--vm-d", baseDelaySec + i * 0.028 + "s");
+          s.textContent = ch;
+          el.appendChild(s);
+          i += 1;
+        });
+      }
+
+      var quoteEl = document.querySelector(".vm-quote");
+      var ledeEl = document.querySelector(".vm-lede");
+      var quoteLen = quoteEl ? quoteEl.textContent.length : 0;
+      wrapVmChars(quoteEl, 0.52);
+      wrapVmChars(ledeEl, 0.52 + quoteLen * 0.028 + 0.42);
+
+      var editorial = document.querySelector(".vm-editorial");
+      if (editorial) {
+        function markEditorialVisible() {
+          editorial.classList.add("is-visible");
+        }
+        if (prefersReduced) {
+          markEditorialVisible();
+        } else {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  markEditorialVisible();
+                  io.disconnect();
+                }
+              });
+            },
+            { threshold: 0.15, rootMargin: "0px 0px -6% 0px" }
+          );
+          io.observe(editorial);
+          requestAnimationFrame(function () {
+            var r = editorial.getBoundingClientRect();
+            if (r.top < window.innerHeight * 0.92 && r.bottom > 0) {
+              markEditorialVisible();
+              io.disconnect();
+            }
+          });
+        }
+      }
+    })();
   </script>
 </body>
 </html>

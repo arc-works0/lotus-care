@@ -63,6 +63,9 @@
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+  /* 慣性スクロール（加速・減速） */
+  --ease-scroll: cubic-bezier(0.33, 0.84, 0.24, 1);
+  --ease-stagger: cubic-bezier(0.22, 1, 0.36, 1);
 
   --tab-bar-h: 4.25rem;
   --top-bar-h: 3.25rem;
@@ -75,7 +78,12 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  scroll-padding-top: calc(var(--top-bar-h) + 0.75rem);
+}
+
+[id] {
+  scroll-margin-top: calc(var(--top-bar-h) + 0.75rem);
 }
 
 body {
@@ -93,6 +101,26 @@ body {
 
 body:has(#nav-toggle:checked) {
   overflow: hidden;
+}
+
+/* ----- 読了ゲージ（極細ゴールド・写真上でも透明感） ----- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 500;
+  pointer-events: none;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(
+    90deg,
+    rgba(212, 175, 55, 0.35) 0%,
+    rgba(212, 175, 55, 0.92) 45%,
+    rgba(232, 212, 168, 0.85) 100%
+  );
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
 }
 
 a {
@@ -138,6 +166,19 @@ a:hover {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .service-card:nth-child(n) {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .vm-quote .vm-char,
+  .vm-lede .vm-char {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
 
@@ -278,6 +319,19 @@ a:hover {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__head {
+  animation: nav-head-in 0.42s var(--ease-stagger) forwards;
+}
+
+@keyframes nav-head-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-overlay__close {
@@ -331,6 +385,44 @@ a:hover {
 
 .nav-overlay__list li {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transform: translateY(0.85rem);
+}
+
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li {
+  animation: nav-stagger-in 0.52s var(--ease-stagger) forwards;
+}
+
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(1) {
+  animation-delay: 0.1s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(2) {
+  animation-delay: 0.16s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(3) {
+  animation-delay: 0.22s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(4) {
+  animation-delay: 0.28s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(5) {
+  animation-delay: 0.34s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(6) {
+  animation-delay: 0.4s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(7) {
+  animation-delay: 0.46s;
+}
+#nav-toggle:checked ~ .nav-overlay .nav-overlay__list li:nth-child(8) {
+  animation-delay: 0.52s;
+}
+
+@keyframes nav-stagger-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-overlay__link {
@@ -350,6 +442,19 @@ a:hover {
   color: var(--gold-soft);
   transform: translateX(6px);
   padding-left: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-overlay__head {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+  .nav-overlay__list li {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
 }
 
 /* ----- Site header（濃色＋オーバーレイで白文字を安定表示） ----- */
@@ -463,6 +568,27 @@ a:hover {
 
 .section {
   margin-bottom: 2.5rem;
+  position: relative;
+}
+
+/* セクション境界を直線ではなく滲みで接続（mask + 淡いピンク） */
+.main-content > .section:not(:first-of-type)::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  right: -1.25rem;
+  top: -2rem;
+  height: 3.75rem;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(252, 228, 236, 0.5) 0%,
+    rgba(255, 245, 246, 0.22) 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 92%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 92%);
+  opacity: 0.72;
 }
 
 .section-heading {
@@ -512,6 +638,52 @@ a:hover {
   flex: 0 0 min(88vw, 22rem);
   scroll-snap-align: center;
   scroll-snap-stop: always;
+  will-change: transform;
+}
+
+@supports (animation-timeline: view()) {
+  .service-card:nth-child(1) {
+    animation: card-depth-a 0.95s var(--ease-stagger) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 48%;
+  }
+  .service-card:nth-child(2) {
+    animation: card-depth-b 0.95s var(--ease-stagger) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 48%;
+  }
+  .service-card:nth-child(3) {
+    animation: card-depth-c 0.95s var(--ease-stagger) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 48%;
+  }
+}
+
+@keyframes card-depth-a {
+  from {
+    transform: translateY(16px) scale(0.992);
+  }
+  to {
+    transform: translateY(-6px) scale(1);
+  }
+}
+
+@keyframes card-depth-b {
+  from {
+    transform: translateY(24px) scale(0.989);
+  }
+  to {
+    transform: translateY(-3px) scale(1);
+  }
+}
+
+@keyframes card-depth-c {
+  from {
+    transform: translateY(11px) scale(0.993);
+  }
+  to {
+    transform: translateY(-9px) scale(1);
+  }
 }
 
 .service-card__text {
@@ -561,10 +733,14 @@ a:hover {
 }
 
 .section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.55), transparent);
-  margin: 2rem 0;
+  height: 2.75rem;
+  margin: 0.5rem 0 1.75rem;
   max-width: 100%;
+  border: none;
+  background: radial-gradient(ellipse 90% 130% at 50% 0%, rgba(252, 228, 236, 0.55) 0%, transparent 72%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+  opacity: 0.82;
 }
 
 /* ----- Vision / Mission（和紙風テクスチャ＋淡いピンクの特別な空間） ----- */
@@ -644,6 +820,28 @@ a:hover {
   line-height: 2.05;
   letter-spacing: 0.05em;
   color: var(--text-heading);
+}
+
+.vm-quote .vm-char,
+.vm-lede .vm-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.38em);
+  filter: blur(3px);
+}
+
+.vm-editorial.is-visible .vm-quote .vm-char,
+.vm-editorial.is-visible .vm-lede .vm-char {
+  animation: vm-char-in 0.62s var(--ease-scroll) forwards;
+  animation-delay: var(--vm-d);
+}
+
+@keyframes vm-char-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 .audience-block {
@@ -740,7 +938,14 @@ a:hover {
 }
 
 .tab-bar__item:active {
-  transform: translateY(-1px);
+  transform: translateY(3px) scale(0.97);
+  box-shadow: inset 0 5px 14px rgba(0, 0, 0, 0.48);
+  background: rgba(173, 20, 87, 0.38);
+}
+
+.tab-bar__item:active .tab-bar__icon {
+  transform: translateY(1px);
+  opacity: 1;
 }
 
 .tab-bar__item:focus-visible {
@@ -802,5 +1007,10 @@ a:hover {
     border-radius: 8px 8px 0 0;
     border-left: 1px solid rgba(212, 175, 55, 0.4);
     border-right: 1px solid rgba(212, 175, 55, 0.4);
+  }
+
+  .main-content > .section:not(:first-of-type)::before {
+    left: 0;
+    right: 0;
   }
 }
